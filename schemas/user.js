@@ -10,7 +10,11 @@ const user = new Schema({
     type: String,
     required: [true, "Email is required"],
     unique: true,
-  }
+  },
+  token: {
+    type: String,
+    default: null,
+  },
 });
 
 const User = mongoose.model("user", user)

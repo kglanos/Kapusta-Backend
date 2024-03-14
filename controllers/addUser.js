@@ -1,10 +1,10 @@
-const User = require("../schemas/user")
+const { createUser, findUserByEmail } = require("../service/user-service")
 const bcrypt = require("bcryptjs");
 
 const addUser = async (req, res, next) => {
     const { password, email } = req.body;
     try {
-        const isUserExist = await User.findOne({ email })
+        const isUserExist = await findUserByEmail({ email })
 
         if (isUserExist) {
             res.status(409).json({
@@ -16,7 +16,7 @@ const addUser = async (req, res, next) => {
 
           const hashedPassword = await bcrypt.hash(password, 10);
 
-          const result = await User.create({
+          const result = await createUser({
             email,
             password: hashedPassword,
         });
