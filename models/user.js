@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
-import { Role } from "../lib/constants";
+import { Role } from "../controllers/auth/constants";
 const { Schema, model } = mongoose;
 
 const userSchema = new Schema(
