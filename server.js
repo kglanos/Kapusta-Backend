@@ -2,7 +2,7 @@ const app = require('./app')
 
 const mongoose = require("mongoose");
 const DB_URL = process.env.DB_HOST;
-const PORT = process.env.PORT
+const PORT = process.env.PORT || 4000;
 
 const dbConnection = async () => {
   try {
@@ -15,7 +15,6 @@ const dbConnection = async () => {
 };
 dbConnection();
 
-
-
-app.listen(process.env.PORT || 3000) 
-console.log('Server is running...');
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});

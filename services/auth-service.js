@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
 import User from "../../models/user";
+import userService from "./user-service";
 
 const SECRET_KEY = process.env.JWT_SECRET_KEY;
 
