@@ -47,6 +47,7 @@ class AuthControllers {
       .json({ status: "success", code: httpCodes.NO_CONTENT, data: {} });
   }
 }
-const AuthControllers = new AuthControllers();
 
-export default AuthControllers;
+const authControllersInstance = new AuthControllers();
+
+export { AuthControllers, authControllersInstance };
