@@ -1,4 +1,4 @@
-const { createUser, findUserByEmail } = require("../service/user-service");
+const { createUser, findUserByEmail } = require("../services/user-service");
 const bcrypt = require("bcryptjs");
 
 const addUser = async (req, res, next) => {
