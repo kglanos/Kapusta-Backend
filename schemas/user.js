@@ -15,8 +15,13 @@ const user = new Schema({
     type: String,
     default: null,
   },
+  name: {
+    type: String,
+    required: [true, "Name is required"],
+    default: "Guest",
+  },
 });
 
-const User = mongoose.model("user", user)
+const User = mongoose.model("user", user);
 
-module.exports = User
+module.exports = User;
