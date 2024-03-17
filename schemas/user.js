@@ -10,6 +10,7 @@ const user = new Schema({
     type: String,
     required: [true, "Email is required"],
     unique: true,
+    default: null,
   },
   token: {
     type: String,
@@ -18,7 +19,7 @@ const user = new Schema({
   name: {
     type: String,
     required: [true, "Name is required"],
-    default: "Guest",
+    default: null,
   },
 });
 
