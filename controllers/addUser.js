@@ -16,7 +16,9 @@ const addUser = async (req, res, next) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const token = generateToken();
+    // const token = generateToken();
+    const user = await findUserByEmail({ email });
+    user.token = generateToken(user);
     const result = await createUser({
       email,
       password: hashedPassword,
@@ -27,7 +29,7 @@ const addUser = async (req, res, next) => {
     return res.status(201).json({
       status: "success",
       code: 201,
-      token: result.token,
+      token: user.token,
       user: {
         message: "Registration successful",
         email: result.email,
