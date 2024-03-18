@@ -3,7 +3,7 @@ const bcrypt = require("bcryptjs");
 const { generateToken } = require("../config/passport-jwt");
 
 const loginUser = async (req, res, next) => {
-  const { password, email } = req.body;
+  const { password, email, name } = req.body;
 
   try {
     const user = await findUserByEmail({ email });
@@ -34,6 +34,7 @@ const loginUser = async (req, res, next) => {
       token: user.token,
       user: {
         email: user.email,
+        name: user.name,
       },
     });
   } catch (e) {
