@@ -23,7 +23,7 @@ const addUser = async (req, res, next) => {
       email,
       password: hashedPassword,
       name,
-      token,
+      token: user.token,
     });
 
     return res.status(201).json({
