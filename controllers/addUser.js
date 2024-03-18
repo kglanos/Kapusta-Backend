@@ -1,6 +1,7 @@
 const { createUser, findUserByEmail } = require("../services/user-service");
 const bcrypt = require("bcryptjs");
 // import { generateToken } from "../config/passport-jwt";
+import authService from "../config/passport-jwt";
 
 const addUser = async (req, res, next) => {
   const { name, password, email } = req.body;
@@ -23,6 +24,8 @@ const addUser = async (req, res, next) => {
       password: hashedPassword,
       name,
     });
+    const token = authService.getToken(user);
+    await authService.setToken(user.id, token);
 
     return res.status(201).json({
       status: "success",
@@ -31,6 +34,7 @@ const addUser = async (req, res, next) => {
         message: "Registration successful",
         email: result.email,
         name: result.name,
+        token: user.token,
       },
     });
   } catch (e) {
