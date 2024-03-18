@@ -1,4 +1,4 @@
-const { createUser, findUserByEmail } = require("../services/user-service");
+/* const { createUser, findUserByEmail } = require("../services/user-service");
 const bcrypt = require("bcryptjs");
 // import { generateToken } from "../config/passport-jwt";
 // import authService from "../config/passport-jwt";
@@ -58,4 +58,53 @@ const addUser = async (req, res, next) => {
     next(e);
   }
 };
+module.exports = { addUser };
+ */
+
+const { createUser, findUserByEmail } = require("../services/user-service");
+const bcrypt = require("bcryptjs");
+const { generateToken } = require("../config/passport-jwt");
+
+const addUser = async (req, res, next) => {
+  const { name, password, email } = req.body;
+  try {
+    const isUserExist = await findUserByEmail({ email });
+
+    if (isUserExist) {
+      return res.status(409).json({
+        status: "conflict",
+        code: 409,
+        data: `email ${email} is already used`,
+      });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const newUser = await createUser({
+      email,
+      password: hashedPassword,
+      name,
+    });
+
+    const token = generateToken(newUser._id);
+
+    newUser.token = token;
+    await newUser.save();
+
+    return res.status(201).json({
+      status: "success",
+      code: 201,
+      token: newUser.token,
+      user: {
+        message: "Registration successful",
+        email: newUser.email,
+        name: newUser.name,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+};
+
 module.exports = { addUser };
