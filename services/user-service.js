@@ -1,6 +1,6 @@
 const User = require("../schemas/user");
 
-const createUser = ({ email, password, name }) => {
+const createUser = ({ email, password, name, token }) => {
   return User.create({ email, password, name, token });
 };
 const findUserByEmail = ({ email }) => {
