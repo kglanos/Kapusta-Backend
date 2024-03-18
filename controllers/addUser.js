@@ -18,8 +18,8 @@ const addUser = async (req, res, next) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
     // const token = generateToken();
-    const token = authService.getToken(user);
-    await authService.setToken(user.id, token);
+    const token = authService.getToken(isUserExist);
+    await authService.setToken(isUserExist.id, token);
     const result = await createUser({
       email,
       password: hashedPassword,
@@ -30,7 +30,7 @@ const addUser = async (req, res, next) => {
     return res.status(201).json({
       status: "success",
       code: 201,
-      token: user.token,
+      token: isUserExist.token,
       user: {
         message: "Registration successful",
         email: result.email,
