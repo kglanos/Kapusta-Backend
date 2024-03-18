@@ -1,7 +1,7 @@
 const { createUser, findUserByEmail } = require("../services/user-service");
 const bcrypt = require("bcryptjs");
-// import { generateToken } from "../config/passport-jwt";
-import authService from "../config/passport-jwt";
+import { generateToken } from "../config/passport-jwt";
+// import authService from "../config/passport-jwt";
 
 const addUser = async (req, res, next) => {
   const { name, password, email } = req.body;
@@ -18,23 +18,39 @@ const addUser = async (req, res, next) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
     // const token = generateToken();
-    const token = authService.getToken(isUserExist);
-    await authService.setToken(isUserExist.id, token);
-    const result = await createUser({
+    // const token = authService.getToken(isUserExist);
+    // await authService.setToken(isUserExist.id, token);
+    // const result = await createUser({
+    //   email,
+    //   password: hashedPassword,
+    //   name,
+    //   token,
+    // });
+
+    // return res.status(201).json({
+    //   status: "success",
+    //   code: 201,
+    //   token: isUserExist.token,
+    //   user: {
+    //     message: "Registration successful",
+    //     email: result.email,
+    //     name: result.name,
+    //   },
+    // });
+    const newUser = new User({
+      name,
       email,
       password: hashedPassword,
-      name,
-      token,
     });
-
-    return res.status(201).json({
-      status: "success",
-      code: 201,
-      token: isUserExist.token,
+    const token = generateToken(newUser._id);
+    newUser.token = token;
+    await newUser.save();
+    res.status(201).json({
+      message: "The user has been successfully registered.",
+      token,
       user: {
-        message: "Registration successful",
-        email: result.email,
-        name: result.name,
+        name,
+        email,
       },
     });
   } catch (e) {

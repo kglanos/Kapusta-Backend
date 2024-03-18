@@ -42,32 +42,32 @@ const auth = (req, res, next) => {
   })(req, res, next);
 };
 
-// const generateToken = (user) => {
-//   return jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-//     expiresIn: "1h",
-//   });
-// };
+const generateToken = (user) => {
+  return jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+    expiresIn: "1h",
+  });
+};
 
-class AuthService {
-  getToken(user) {
-    const id = user.id;
-    const payload = { id };
-    const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "12h" });
-    return token;
-  }
+// class AuthService {
+//   getToken(user) {
+//     const id = user.id;
+//     const payload = { id };
+//     const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "12h" });
+//     return token;
+//   }
 
-  async setToken(id, token) {
-    await this.updateToken(id, token);
-  }
+//   async setToken(id, token) {
+//     await this.updateToken(id, token);
+//   }
 
-  async updateToken(id, token) {
-    return await User.updateOne({ _id: id }, { token });
-  }
-}
-const authService = new AuthService();
+//   async updateToken(id, token) {
+//     return await User.updateOne({ _id: id }, { token });
+//   }
+// }
+// const authService = new AuthService();
 
 module.exports = {
   auth,
   generateToken,
-  authService,
+  // authService,
 };
