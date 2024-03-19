@@ -8,7 +8,7 @@ const { auth } = require("../config/passport-jwt");
 
 userRouter.post("/registration", addUser)
 userRouter.post("/login", loginUser)
-userRouter.get("/logout", auth, logoutUser)
+userRouter.post("/logout", auth, logoutUser)
 userRouter.get("/current", auth, currentUser )
 
 module.exports = userRouter
