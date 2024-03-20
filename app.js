@@ -2,6 +2,7 @@ const express = require("express");
 const logger = require("morgan");
 const cors = require("cors");
 const userRouter = require("./routes/userRouter");
+const transactionRouter = require("./routes/transactionRouter")
 require("dotenv").config();
 
 const app = express();
@@ -12,6 +13,7 @@ app.use(logger(formatsLogger));
 app.use(cors());
 app.use(express.json());
 app.use("/", userRouter);
+app.use("/", transactionRouter)
 
 app.get("/", (req, res) => {
   res.send("Server is working!");

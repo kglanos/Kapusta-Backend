@@ -1,11 +1,11 @@
 const {
   createTransaction,
+  getTransactionsByOperation,
+  deleteTransactionById,
   getSummaryByMonth,
   getAllSummaryReports,
   getCategoryReports,
   getItemsCategoryReports,
-  getTransactionsByOperation,
-  deleteTransactionById,
   resetTransactionsAndBalance,
   clearTransactionsByOperation,
   getInfoAllTransaction,
@@ -30,8 +30,20 @@ const newTransaction = async (req, res, _) => {
       operationSum
     );
     return res
-      .status(201)
-      .json({ data: transaction, user: { balance: updatedUserBalance } });
+    .status(201)
+    .json({ data: transaction, user: { balance: updatedUserBalance } });
+  } catch (error) {
+    res.status(error.code || 500).json({ message: error.message });
+  }
+};
+
+// Pobranie transakcji według typu operacji
+const getTransactions = async (req, res, _) => {
+  try {
+    const { id } = req.user;
+    const { operation } = req.body;
+    const transactions = await getTransactionsByOperation(id, operation);
+    res.status(200).json(transactions);
   } catch (error) {
     res.status(error.code || 500).json({ message: error.message });
   }
@@ -115,17 +127,6 @@ const itemsCategoryReports = async (req, res, _) => {
   }
 };
 
-// Pobranie transakcji według typu operacji
-const getTransactions = async (req, res, _) => {
-  try {
-    const { id } = req.user;
-    const { operation } = req.body;
-    const transactions = await getTransactionsByOperation(id, operation);
-    res.status(200).json(transactions);
-  } catch (error) {
-    res.status(error.code || 500).json({ message: error.message });
-  }
-};
 
 // Resetowanie transakcji i salda
 const resetTransactions = async (req, res, _) => {

@@ -45,6 +45,5 @@ const schema = new Schema(
 
 const Transaction = model("transaction", schema);
 
-module.exports = {
-  Transaction,
-};
+module.exports = Transaction;
+

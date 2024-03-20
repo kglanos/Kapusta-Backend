@@ -1,5 +1,6 @@
 const { ObjectId } = require("mongodb");
-const { Transaction } = require("../schemas/transactions");
+
+const Transaction = require("../../schemas/transaction");
 
 // Dodawanie nowej transakcji
 const createTransaction = async (data, id) => {
@@ -12,6 +13,35 @@ const createTransaction = async (data, id) => {
     throw error;
   }
 };
+
+// Pobieranie wszystkich transakcji według typu operacji
+const getTransactionsByOperation = async (id, operation) => {
+  try {
+    const transactions = await Transaction.find({ userId: id, operation });
+
+    return transactions;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+// Usuwanie transakcji po ID
+const deleteTransactionById = async (id) => {
+  console.log(id)
+  try {
+    const transaction = await Transaction.findOneAndDelete({ _id: id });
+
+    if (!transaction) {
+      throw new Error(`Transaction with id does not exist`);
+    }
+    return transaction;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
 
 // Pobieranie podsumowania transakcji dla danego miesiąca
 const getSummaryByMonth = async (id, operation) => {
@@ -160,32 +190,7 @@ const getItemsCategoryReports = async (
   }
 };
 
-// Pobieranie wszystkich transakcji według typu operacji
-const getTransactionsByOperation = async (id, operation) => {
-  try {
-    const transactions = await Transaction.find({ userId: id, operation });
 
-    return transactions;
-  } catch (error) {
-    console.log(error);
-    throw error;
-  }
-};
-
-// Usuwanie transakcji po ID
-const deleteTransactionById = async (id) => {
-  try {
-    const transaction = await Transaction.findByIdAndRemove({ _id: id });
-
-    if (!transaction) {
-      throw new Error(`Transaction with id does not exist`);
-    }
-    return transaction;
-  } catch (error) {
-    console.log(error);
-    throw error;
-  }
-};
 
 // Resetowanie transakcji i salda
 const resetTransactionsAndBalance = async (id) => {
