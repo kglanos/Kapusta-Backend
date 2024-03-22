@@ -21,6 +21,7 @@ const {
 
 // Dodawanie nowej transakcji
 const newTransaction = async (req, res, _) => {
+  console.log(req, res)
   try {
     const transaction = await createTransaction(req.body, req.user._id);
     const { userId, operation: operationType, sum: operationSum } = transaction;
@@ -41,8 +42,8 @@ const newTransaction = async (req, res, _) => {
 const getTransactions = async (req, res, _) => {
   try {
     const { id } = req.user;
-    const { operation } = req.body;
-    const transactions = await getTransactionsByOperation(id, operation);
+    // const { operation } = req.body;
+    const transactions = await getTransactionsByOperation(id);
     res.status(200).json(transactions);
   } catch (error) {
     res.status(error.code || 500).json({ message: error.message });

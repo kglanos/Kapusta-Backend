@@ -28,7 +28,7 @@ const { auth } = require("../config/passport-jwt");
 
 const userTransaction = express.Router();
 
-// dodanie nowej transakcji
+// dodanie nowej transakcji  - stare 
 
 userTransaction.post(
   "/new",
@@ -37,11 +37,30 @@ userTransaction.post(
   tryCatchWrapper(newTransaction)
 );
 
-// pobranie wszystkich transakcji - trzeba podać typ operacji (income lub expenses)
-userTransaction.post("/operation", auth, tryCatchWrapper(getTransactions));
+// pobranie wszystkich transakcji - trzeba podać typ operacji (income lub expenses) -stare
+userTransaction.get("/operation", auth, tryCatchWrapper(getTransactions));
+
+
+
+
+// ---------------  pobranie i dodanie transakcji expenses - nowe 
+
+userTransaction.post("/transaction/expenses", auth, tryCatchWrapper(newTransaction));
+
+userTransaction.get("/transaction/expenses", auth, tryCatchWrapper(getTransactions));
+
+
+
+
+// ---------------------
+userTransaction.get("/transaction/income", auth, tryCatchWrapper(getTransactions));
+
+
+
+
 
 // usuwa transakcję po id
-userTransaction.delete("/delete/:id", auth, tryCatchWrapper(deleteTransaction));
+userTransaction.delete("/transaction/:id", auth, tryCatchWrapper(deleteTransaction));
 
 // zwraca sum - po typie operacji osobno income i expenses z rozbiciem na miesiące
 

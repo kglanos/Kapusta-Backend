@@ -7,7 +7,6 @@ const { currentUser } = require("../controllers/currentUser");
 const { auth } = require("../config/passport-jwt");
 
 userRouter.post("/registration", addUser);
-
 userRouter.post("/login", loginUser);
 userRouter.post("/logout", auth, logoutUser);
 userRouter.get("/current", auth, currentUser);
