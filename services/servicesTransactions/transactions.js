@@ -15,9 +15,9 @@ const createTransaction = async (data, id) => {
 };
 
 // Pobieranie wszystkich transakcji według typu operacji
-const getTransactionsByOperation = async (id, operation) => {
+const getTransactionsByOperation = async (id) => {
   try {
-    const transactions = await Transaction.find({ userId: id, operation });
+    const transactions = await Transaction.find({ userId: id });
 
     return transactions;
   } catch (error) {

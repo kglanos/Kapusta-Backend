@@ -4,7 +4,7 @@ const schema = new Schema(
   {
     operation: {
       type: String,
-      required: true,
+      required: false,
     },
     description: {
       type: String,
@@ -16,7 +16,7 @@ const schema = new Schema(
     },
     sum: {
       type: Number,
-      required: true,
+      required: false,
     },
     date: {
       type: String,
@@ -24,15 +24,15 @@ const schema = new Schema(
     },
     month: {
       type: String,
-      required: true,
+      required: false,
     },
     year: {
       type: String,
-      required: true,
+      required: false,
     },
     currency: {
       type: String,
-      required: true,
+      required: false,
     },
     userId: {
       type: Schema.Types.ObjectId,
