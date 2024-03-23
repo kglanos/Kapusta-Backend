@@ -11,6 +11,7 @@ const {
   clearByOperation,
   allInfoTransaction,
   allReportsTransactions,
+  getExpenseTransactions 
 } = require("../controllers/transactions");
 
 const { tryCatchWrapper } = require("../utils/tryCatchWrapper");
@@ -59,7 +60,19 @@ userTransaction.delete("/transaction/:id", auth, tryCatchWrapper(deleteTransacti
 
 
 
-
+userTransaction.get("/transaction/total-espenses", async (req, res) => {
+  try {
+    // Pobierz wszystkie transakcje wydatków
+    const expenseTransactions = await getExpenseTransactions();
+    // Zsumuj kwoty wszystkich transakcji wydatków
+    const totalExpense = expenseTransactions.reduce((total, transaction) => total + transaction.amount, 0);
+    // Zwróć sumę jako odpowiedź
+    res.json({ totalExpense });
+  } catch (error) {
+    console.error('Błąd podczas pobierania sumy wydatków:', error);
+    res.status(500).json({ error: 'Wystąpił błąd podczas przetwarzania żądania' });
+  }
+});
 
 
 // zwraca sum - po typie operacji osobno income i expenses z rozbiciem na miesiące
