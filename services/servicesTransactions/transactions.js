@@ -7,7 +7,7 @@ const createTransaction = async (data, id, operationType) => {
   try {
     data.userId = id;
     data.operationType = operationType;
-    const transaction = await Transaction.create(data, operationType);
+    const transaction = await Transaction.create(data);
     return transaction;
   } catch (error) {
     console.log(error);
@@ -19,7 +19,7 @@ const createTransaction = async (data, id, operationType) => {
 const getTransactionsByOperation = async (id, operationType) => {
   try {
     const transactions = await Transaction.find({ userId: id, operationType});
-
+    console.log(transactions)
     return transactions;
   } catch (error) {
     console.log(error);
