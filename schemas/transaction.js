@@ -18,6 +18,10 @@ const schema = new Schema(
       type: Number,
       required: false,
     },
+    amount: {
+      type: Number,
+      required: true,
+    },
     date: {
       type: String,
       required: true,
