@@ -3,10 +3,11 @@ const { ObjectId } = require("mongodb");
 const Transaction = require("../../schemas/transaction");
 
 // Dodawanie nowej transakcji
-const createTransaction = async (data, id) => {
+const createTransaction = async (data, id, operationType) => {
   try {
     data.userId = id;
-    const transaction = await Transaction.create(data);
+    data.operationType = operationType;
+    const transaction = await Transaction.create(data, operationType);
     return transaction;
   } catch (error) {
     console.log(error);
@@ -15,9 +16,9 @@ const createTransaction = async (data, id) => {
 };
 
 // Pobieranie wszystkich transakcji według typu operacji
-const getTransactionsByOperation = async (id) => {
+const getTransactionsByOperation = async (id, operationType) => {
   try {
-    const transactions = await Transaction.find({ userId: id });
+    const transactions = await Transaction.find({ userId: id, operationType});
 
     return transactions;
   } catch (error) {
