@@ -2,7 +2,7 @@ const { Schema, model } = require("mongoose");
 
 const schema = new Schema(
   {
-    operation: {
+    operationType: {
       type: String,
       required: false,
     },
@@ -17,6 +17,10 @@ const schema = new Schema(
     sum: {
       type: Number,
       required: false,
+    },
+    amount: {
+      type: Number,
+      required: true,
     },
     date: {
       type: String,

@@ -2,6 +2,8 @@ const User = require("../../schemas/user");
 
 const Transaction = require("../../schemas/transaction");
 
+
+
 // Funkcja aktualizująca saldo użytkownika
 const updateUserBalance = async (userId, operationType, operationSum) => {
   try {

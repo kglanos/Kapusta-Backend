@@ -46,21 +46,21 @@ userTransaction.get("/operation", auth, tryCatchWrapper(getTransactions));
 // ---------------  pobranie i dodanie transakcji expenses - nowe 
 
 userTransaction.post("/transaction/expenses", auth, tryCatchWrapper(newTransaction));
-
 userTransaction.get("/transaction/expenses", auth, tryCatchWrapper(getTransactions));
 
 
 
 
 // ---------------------
+userTransaction.post("/transaction/income", auth, tryCatchWrapper(newTransaction));
 userTransaction.get("/transaction/income", auth, tryCatchWrapper(getTransactions));
 
-
-
-
-
-// usuwa transakcję po id
 userTransaction.delete("/transaction/:id", auth, tryCatchWrapper(deleteTransaction));
+
+
+
+
+
 
 // zwraca sum - po typie operacji osobno income i expenses z rozbiciem na miesiące
 
