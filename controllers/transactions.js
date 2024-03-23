@@ -209,6 +209,10 @@ const allReportsTransactions = async (req, res, _) => {
   }
 };
 
+
+
+
+
 module.exports = {
   newTransaction,
   deleteTransaction,
@@ -221,4 +225,5 @@ module.exports = {
   clearByOperation,
   allInfoTransaction,
   allReportsTransactions,
+  
 };
