@@ -22,14 +22,13 @@ const {
 // Dodawanie nowej transakcji
 const newTransaction = async (req, res, _) => {
   try {
-    // let operationType;
-    // if (req.path === '/transaction/income') {
-    //   operationType = 'income';
-    // } else if (req.path === '/transaction/expenses') {
-    //   operationType = 'expenses';
-    // }
-
-    const transaction = await createTransaction(req.body, req.user._id);
+    let operationType;
+    if (req.path === '/transaction/income') {
+      operationType = 'income';
+    } else if (req.path === '/transaction/expenses') {
+      operationType = 'expenses';
+    } 
+    const transaction = await createTransaction(req.body, req.user._id, operationType);
     const { userId, sum: operationSum } = transaction;
     const updatedUserBalance = await updateUserBalance(
       userId,
@@ -47,16 +46,18 @@ const newTransaction = async (req, res, _) => {
 const getTransactions = async (req, res, _) => {
   try {
 
-    // let operationType;
-    // if (req.path === '/transaction/income') {
-    //   operationType = 'income';
-    // } else if (req.path === '/transaction/expenses') {
-    //   operationType = 'expenses';
-    // }
-
+    let operationType;
+    if (req.path === '/transaction/income') {
+      operationType = 'income';
+    } else if (req.path === '/transaction/expenses') {
+      operationType = 'expenses';
+    } else {
+      // Domyślnie ustal typ operacji na 'unknown' lub podejmij inną odpowiednią akcję
+      operationType = 'unknown';
+    }
     const { id } = req.user;
     
-    const transactions = await getTransactionsByOperation(id);
+    const transactions = await getTransactionsByOperation(id, operationType);
     res.status(200).json(transactions);
   } catch (error) {
     res.status(error.code || 500).json({ message: error.message });

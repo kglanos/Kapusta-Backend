@@ -2,13 +2,13 @@ const { Schema, model } = require("mongoose");
 
 const schema = new Schema(
   {
-    operationType: {
-      type: String,
-      required: false,
-    },
     description: {
       type: String,
       required: true,
+    },
+    operationType: {
+      type: String,
+      required: false,
     },
     category: {
       type: String,
