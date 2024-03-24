@@ -1,7 +1,8 @@
-const User = require("../schemas/user"); // Załóżmy, że masz model User
+const User = require("../schemas/user"); 
 
 const updateInitialBalance = async (req, res) => {
   const { balance } = req.body;
+  console.log(req.body)
   const userId = req.user._id; // Identyfikator aktualnie zalogowanego użytkownika
 
   if (!balance) {
