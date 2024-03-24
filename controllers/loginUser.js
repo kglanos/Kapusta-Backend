@@ -5,6 +5,8 @@ const { generateToken } = require("../config/passport-jwt");
 const loginUser = async (req, res, next) => {
   const { password, email } = req.body;
 
+  console.log(req.body)
+
   try {
     const user = await findUserByEmail({ email });
 
@@ -32,9 +34,11 @@ const loginUser = async (req, res, next) => {
     res.status(200).json({
       message: "Login successful",
       token: user.token,
+      balance: user.balance,
       user: {
         email: user.email,
         name: user.name,
+        
       },
     });
   } catch (e) {
