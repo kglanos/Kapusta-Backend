@@ -29,14 +29,36 @@ const newTransaction = async (req, res, _) => {
       operationType = 'expenses';
     } 
     const transaction = await createTransaction(req.body, req.user._id, operationType);
-    const { userId, sum: operationSum } = transaction;
+    const { userId, amount: operationAmount } = transaction;
     const updatedUserBalance = await updateUserBalance(
       userId,
       operationType,
-      operationSum
+      operationAmount
     );
 
     return res.status(201).json({ data: transaction, user: { balance: updatedUserBalance } });
+  } catch (error) {
+    res.status(error.code || 500).json({ message: error.message });
+  }
+};
+
+// Usuwanie transakcji po ID
+const deleteTransaction = async (req, res, _) => {
+  
+  try {
+    
+    const { id } = req.params;
+    const transaction = await deleteTransactionById(id);
+    const { userId,  operationType, amount: operationAmount } = transaction;
+    // console.log(transaction)
+    const updatedBalance = await updateUserBalanceAfterDelete(
+      userId,
+      operationType,
+      operationAmount
+    );
+    res
+      .status(200)
+      .json({ data: transaction, user: { balance: updatedBalance } });
   } catch (error) {
     res.status(error.code || 500).json({ message: error.message });
   }
@@ -64,24 +86,6 @@ const getTransactions = async (req, res, _) => {
   }
 };
 
-// Usuwanie transakcji po ID
-const deleteTransaction = async (req, res, _) => {
-  try {
-    const { id } = req.params;
-    const transaction = await deleteTransactionById(id);
-    const { userId, operation: operationType, sum: operationSum } = transaction;
-    const updatedBalance = await updateUserBalanceAfterDelete(
-      userId,
-      operationType,
-      operationSum
-    );
-    res
-      .status(200)
-      .json({ data: transaction, user: { balance: updatedBalance } });
-  } catch (error) {
-    res.status(error.code || 500).json({ message: error.message });
-  }
-};
 
 // Pobranie sumy transakcji według przychodów lub wydatków dla danego miesiąca
 const summaryByMonth = async (req, res, _) => {
