@@ -5,7 +5,7 @@ const Transaction = require("../../schemas/transaction");
 
 
 // Funkcja aktualizująca saldo użytkownika
-const updateUserBalance = async (userId, operationType, operationSum) => {
+const updateUserBalance = async (userId, operationType, operationAmount) => {
   try {
     // Pobieranie użytkownika na podstawie jego identyfikatora
     const user = await User.findById(userId);
@@ -14,10 +14,10 @@ const updateUserBalance = async (userId, operationType, operationSum) => {
     // Aktualizacja salda użytkownika w zależności od rodzaju operacji
     switch (operationType) {
       case "income":
-        userBalance += operationSum;
+        userBalance += operationAmount;
         break;
       case "expenses":
-        userBalance -= operationSum;
+        userBalance -= operationAmount;
         break;
       default:
         break;
@@ -41,7 +41,7 @@ const updateUserBalance = async (userId, operationType, operationSum) => {
 const updateUserBalanceAfterDelete = async (
   userId,
   operationType,
-  operationSum
+  operationAmount
 ) => {
   try {
     // Pobieranie użytkownika na podstawie jego identyfikatora
@@ -51,10 +51,10 @@ const updateUserBalanceAfterDelete = async (
     // Aktualizacja salda użytkownika w zależności od rodzaju operacji
     switch (operationType) {
       case "income":
-        userBalance -= operationSum;
+        userBalance -= operationAmount;
         break;
       case "expenses":
-        userBalance += operationSum;
+        userBalance += operationAmount;
         break;
       default:
         break;
