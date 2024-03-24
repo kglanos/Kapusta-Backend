@@ -32,7 +32,7 @@ const newTransaction = async (req, res, _) => {
     const { userId, sum: operationSum } = transaction;
     const updatedUserBalance = await updateUserBalance(
       userId,
-      // operationType,
+      operationType,
       operationSum
     );
 
