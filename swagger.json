@@ -1,0 +1,1755 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": 1.0,
+    "title": "Project Kapusta",
+    "description": "Finance App, group project"
+  },
+  "consumes": ["application/json", "text/plain"],
+  "produces": ["application/json", "text/plain"],
+  "servers": [
+    {
+      "url": "https://virtserver.swaggerhub.com/MALWINALUKJANSKA1/Projekt-Kapusta/1.0.0"
+    },
+    { "url": "http://localhost:4000/api" }
+  ],
+  "tags": [
+    {
+      "name": "User",
+      "description": "User endpoints"
+    },
+    {
+      "name": "Transaction",
+      "description": "Transaction endpoints"
+    }
+  ],
+  "paths": {
+    "/users/registration": {
+      "post": {
+        "tags": ["User"],
+        "summary": "User registration",
+        "parameters": [],
+        "requestBody": {
+          "description": "Register's object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User registration was successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegisterResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "The email is already taken by another user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegisterError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/login": {
+      "post": {
+        "tags": ["User"],
+        "summary": "User authentication",
+        "parameters": [],
+        "requestBody": {
+          "description": "Login's object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Email or password is wrong",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/logout": {
+      "get": {
+        "tags": ["User"],
+        "summary": "User logout",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "204": {
+            "description": "logout succesful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CurrentResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LogoutErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/current": {
+      "patch": {
+        "tags": ["User"],
+        "summary": "Get current user",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {},
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CurrentResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CurrentErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/balance": {
+      "patch": {
+        "tags": ["User"],
+        "summary": "Change Balance",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Balance's object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BalanceRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Saldo użytkownika zostało pomyślnie zaktualizowane",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BalanceResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Brak wymaganych danych: balance jest wymagane",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BalanceRequestError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Nie znaleziono użytkownika",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Coś poszło nie tak podczas aktualizacji salda użytkownika",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "/transaction/operation": {
+      "get": {
+        "tags": ["Transactions"],
+        "summary": "Add new transaction",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Transaction's object with balance",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransactionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateTransactionResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateTransactionError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BalanceErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/transaction/new": {
+      "post": {
+        "tags": ["Transactions"],
+        "summary": "Add new transaction",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Transaction's object with balance",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTransactionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateTransactionResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateTransactionError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BalanceErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/transaction/delete/{id}": {
+      "delete": {
+        "tags": ["Transactions"],
+        "summary": "Delete one transaction",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string",
+            "description": "The id of transaction",
+            "example": "63f8fe89be7201f84080608d"
+          }
+        ],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {},
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteTransactionResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteTransactionErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/transaction/summary": {
+      "post": {
+        "tags": ["Transactions"],
+        "summary": "Transaction by month",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Transaction's year and month",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransactionYearRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateTransactionResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateTransactionErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/transaction/all-summary-reports": {
+      "post": {
+        "tags": ["Transactions"],
+        "summary": "Get all transactions by month",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Transaction's by month",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransactionMonthRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetTransactionMonthResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/transaction/category-reports": {
+      "post": {
+        "tags": ["Transactions"],
+        "summary": "Get transactions by date",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Transaction's by category",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransactionCategoryRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetTransactionCategoryResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/transaction/all-operation": {
+      "post": {
+        "tags": ["Transactions"],
+        "summary": "All transactions",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "All Transactions",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransactionAllOperationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetTransactionAllOperationResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/transaction/items-category-reports": {
+      "post": {
+        "tags": ["Transactions"],
+        "summary": "Get transactions by period and category",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Transaction's by category",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransactionOneCategoryRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetOneCategoryResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "/transaction/expenses": {
+    "post": {
+      "tags": ["Transactions"],
+      "summary": "New Expense Transaction",
+      "parameters": [],
+      "security": [{ "Bearer": [] }],
+      "requestBody": {
+        "description": "Expense transaction details",
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/TransactionRequest"
+            }
+          }
+        }
+      },
+      "responses": {
+        "201": {
+          "description": "Created",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransactionResponse"
+              }
+            }
+          }
+        },
+        "401": {
+          "description": "Unauthorized",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ErrorUnauthorized"
+              }
+            }
+          }
+        },
+        "500": {
+          "description": "Internal Server Error",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ErrorResponse"
+              }
+            }
+          }
+        }
+      }
+    },
+    "get": {
+      "tags": ["Transactions"],
+      "summary": "Get Expense Transactions",
+      "parameters": [],
+      "security": [{ "Bearer": [] }],
+      "responses": {
+        "200": {
+          "description": "OK",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Transaction"
+                }
+              }
+            }
+          }
+        },
+        "401": {
+          "description": "Unauthorized",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ErrorUnauthorized"
+              }
+            }
+          }
+        },
+        "500": {
+          "description": "Internal Server Error",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ErrorResponse"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "/transaction/income": {
+    "post": {
+      "tags": ["Transactions"],
+      "summary": "New Income Transaction",
+      "parameters": [],
+      "security": [{ "Bearer": [] }],
+      "requestBody": {
+        "description": "Income transaction details",
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/TransactionRequest"
+            }
+          }
+        }
+      },
+      "responses": {
+        "201": {
+          "description": "Created",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransactionResponse"
+              }
+            }
+          }
+        },
+        "401": {
+          "description": "Unauthorized",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ErrorUnauthorized"
+              }
+            }
+          }
+        },
+        "500": {
+          "description": "Internal Server Error",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ErrorResponse"
+              }
+            }
+          }
+        }
+      }
+    },
+    "get": {
+      "tags": ["Transactions"],
+      "summary": "Get Income Transactions",
+      "parameters": [],
+      "security": [{ "Bearer": [] }],
+      "responses": {
+        "200": {
+          "description": "OK",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Transaction"
+                }
+              }
+            }
+          }
+        },
+        "401": {
+          "description": "Unauthorized",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ErrorUnauthorized"
+              }
+            }
+          }
+        },
+        "500": {
+          "description": "Internal Server Error",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ErrorResponse"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "/transaction/all-reports": {
+    "post": {
+      "tags": ["Transactions"],
+      "summary": "Get all reports",
+      "parameters": [],
+      "security": [{ "Bearer": [] }],
+      "requestBody": {
+        "description": "Request object for all reports",
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/TransactionAllReportsRequest"
+            }
+          }
+        }
+      },
+      "responses": {
+        "200": {
+          "description": "success",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetTransactionAllOperationResponse"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "/transactions/delete_all_operation": {
+    "delete": {
+      "tags": ["Transactions"],
+      "summary": "Clear transactions by operation",
+      "security": [{ "Bearer": [] }],
+      "requestBody": {
+        "description": "Request object for clear transactions by operation",
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ClearTransactionsByOperationRequest"
+            }
+          }
+        }
+      },
+      "responses": {
+        "200": {
+          "description": "Success",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ClearTransactionsByOperationResponse"
+              }
+            }
+          }
+        },
+        "400": {
+          "description": "Bad request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BadRequestErrorResponse"
+              }
+            }
+          }
+        },
+        "401": {
+          "description": "Unauthorized",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UnauthorizedErrorResponse"
+              }
+            }
+          }
+        },
+        "500": {
+          "description": "Internal Server Error",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InternalServerErrorResponse"
+              }
+            }
+          }
+        }
+      }
+    },
+    "put": {
+      "tags": ["Transactions"],
+      "summary": "Update transactions by operation",
+      "security": [{ "Bearer": [] }],
+      "requestBody": {
+        "description": "Request object for update transactions by operation",
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/UpdateTransactionsByOperationRequest"
+            }
+          }
+        }
+      },
+      "responses": {
+        "200": {
+          "description": "Success",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateTransactionsByOperationResponse"
+              }
+            }
+          }
+        },
+        "400": {
+          "description": "Bad request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BadRequestErrorResponse"
+              }
+            }
+          }
+        },
+        "401": {
+          "description": "Unauthorized",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UnauthorizedErrorResponse"
+              }
+            }
+          }
+        },
+        "500": {
+          "description": "Internal Server Error",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InternalServerErrorResponse"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+
+  "components": {
+    "schemas": {
+      "RegisterRequest": {
+        "type": "object",
+        "required": ["email", "password"],
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "User's email",
+            "format": "email"
+          },
+          "password": {
+            "type": "string",
+            "description": "User's password",
+            "example": "qwerty123"
+          }
+        }
+      },
+      "RegisterResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "success"
+          },
+          "code": {
+            "type": "string",
+            "description": "201"
+          },
+          "user": {
+            "type": "object",
+            "description": "User's credential",
+            "properties": {
+              "email": {
+                "type": "string",
+                "description": "User's email",
+                "format": "email"
+              }
+            }
+          }
+        }
+      },
+      "RegisterError": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "error"
+          },
+          "code": {
+            "type": "string",
+            "description": "409"
+          },
+          "message": {
+            "type": "string",
+            "description": "Email in use"
+          }
+        }
+      },
+      "LoginRequest": {
+        "type": "object",
+        "required": ["email", "password"],
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "User's email",
+            "format": "email"
+          },
+          "password": {
+            "type": "string",
+            "description": "User's password",
+            "example": "qwerty123"
+          }
+        }
+      },
+      "LoginResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "success"
+          },
+          "code": {
+            "type": "string",
+            "description": "200"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "string",
+                "description": "User's id"
+              },
+              "token": {
+                "type": "string",
+                "description": "User's token"
+              },
+              "balance": {
+                "type": "number",
+                "description": "User's balance"
+              },
+              "email": {
+                "type": "string",
+                "description": "User's email",
+                "format": "email"
+              }
+            }
+          }
+        }
+      },
+      "LoginErrorResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "error"
+          },
+          "code": {
+            "type": "string",
+            "description": "401"
+          },
+          "message": {
+            "type": "string",
+            "description": "Invalid email address or password"
+          }
+        }
+      },
+      "LoginErrorVerifiedResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "error"
+          },
+          "code": {
+            "type": "string",
+            "description": "409"
+          },
+          "message": {
+            "type": "string",
+            "description": "User has not verified his email"
+          }
+        }
+      },
+      "CurrentResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "success"
+          },
+          "code": {
+            "type": "string",
+            "description": "201"
+          },
+          "data": {
+            "type": "object",
+            "description": "User's credential",
+            "properties": {
+              "email": {
+                "type": "string",
+                "description": "User's email",
+                "format": "email"
+              },
+              "_id": {
+                "type": "string",
+                "description": "User's id"
+              },
+              "password": {
+                "type": "string",
+                "description": "User's password"
+              },
+              "token": {
+                "type": "String",
+                "default": "null"
+              },
+              "balance": {
+                "type": "number",
+                "description": "User's balance"
+              }
+            }
+          }
+        }
+      },
+      "CurrentErrorResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "error"
+          },
+          "code": {
+            "type": "string",
+            "description": "401"
+          },
+          "message": {
+            "type": "string",
+            "description": "Unauthorized"
+          }
+        }
+      },
+      "LogoutResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "success"
+          },
+          "code": {
+            "type": "string",
+            "description": "201"
+          },
+          "message": {
+            "type": "string",
+            "description": "The exit was successful"
+          }
+        }
+      },
+      "LogoutErrorResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "error"
+          },
+          "code": {
+            "type": "string",
+            "description": "401"
+          },
+          "message": {
+            "type": "string",
+            "description": "Unauthorized"
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "error",
+            "example": "error"
+          },
+          "code": {
+            "type": "string",
+            "description": "Error code",
+            "example": "500"
+          },
+          "message": {
+            "type": "string",
+            "description": "Invalid email address or password",
+            "example": "Invalid email address or password"
+          }
+        }
+      },
+      "BalanceRequest": {
+        "type": "object",
+        "properties": {
+          "balance": {
+            "type": "number",
+            "description": "User's balance",
+            "example": 0
+          }
+        }
+      },
+      "BalanceResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "success"
+          },
+          "code": {
+            "type": "string",
+            "description": "201"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "balance": {
+                "type": "number",
+                "description": "User's balance",
+                "example": 50000
+              }
+            }
+          }
+        }
+      },
+      "BalanceRequestError": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "error",
+            "example": "error"
+          },
+          "code": {
+            "type": "string",
+            "description": "400",
+            "example": "400"
+          },
+          "message": {
+            "type": "string",
+            "description": "Not valid balance",
+            "example": "Not valid balance"
+          }
+        }
+      },
+      "NotFoundErrorResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "error",
+            "example": "error"
+          },
+          "code": {
+            "type": "string",
+            "description": "404",
+            "example": "404"
+          },
+          "message": {
+            "type": "string",
+            "description": "Not found",
+            "example": "Not found"
+          }
+        }
+      },
+      "UserUpdateRequest": {
+        "type": "object",
+        "required": ["userName", "avatarUrl"],
+        "properties": {
+          "userName": {
+            "type": "string",
+            "description": "User's name"
+          },
+          "avatarUrl": {
+            "type": "string",
+            "description": "User's avatar url",
+            "example": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0UMAuEo7HPOyChm1Szf3jrlrk7knkVWy8QQ&usqp=CAU"
+          }
+        }
+      },
+      "UserUpdateResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "success"
+          },
+          "code": {
+            "type": "string",
+            "description": "201"
+          },
+          "data": {
+            "type": "object",
+            "description": "User's credential",
+            "properties": {
+              "email": {
+                "type": "string",
+                "description": "User's email",
+                "format": "email"
+              },
+              "name": {
+                "type": "String",
+                "required": "Name is required",
+                "default": "null"
+              },
+              "token": {
+                "type": "String",
+                "default": "null"
+              },
+              "_id": {
+                "type": "string",
+                "description": "User's id"
+              },
+              "password": {
+                "type": "string",
+                "description": "User's password"
+              },
+              "balance": {
+                "type": "number",
+                "description": "User's balance"
+              }
+            }
+          }
+        }
+      },
+
+      "TransactionRequest": {
+        "type": "object",
+        "required": ["operation"],
+        "properties": {
+          "operation": {
+            "type": "string",
+            "description": "Type of transaction",
+            "example": "income"
+          }
+        }
+      },
+      "CreateTransactionRequest": {
+        "type": "object",
+        "required": [
+          "operation",
+          "description",
+          "category",
+          "sum",
+          "date",
+          "month",
+          "year",
+          "currency"
+        ],
+        "properties": {
+          "operation": {
+            "type": "string",
+            "description": "Type of transaction",
+            "example": "income"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of transaction",
+            "example": "Зарплата за лютий"
+          },
+          "category": {
+            "type": "string",
+            "description": "Category of transaction",
+            "example": "Salary"
+          },
+          "sum": {
+            "type": "number",
+            "description": "Sum of transaction",
+            "example": 100000
+          },
+          "date": {
+            "type": "string",
+            "description": "Date of transaction",
+            "example": "25.02.2023"
+          },
+          "month": {
+            "type": "string",
+            "description": "Month of transaction",
+            "example": "February"
+          },
+          "year": {
+            "type": "string",
+            "description": "Year of transaction",
+            "example": "2023"
+          },
+          "currency": {
+            "type": "string",
+            "description": "Currency of transaction",
+            "example": "UAH"
+          }
+        }
+      },
+      "BalanceForTransactionRequest": {
+        "type": "number",
+        "properties": {
+          "balance": {
+            "type": "number",
+            "description": "User's balance",
+            "example": 10000000
+          }
+        }
+      },
+      "CreateTransactionResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "Created"
+          },
+          "code": {
+            "type": "string",
+            "description": "201"
+          },
+          "resultTransaction": {
+            "type": "object",
+            "description": "Full transaction",
+            "properties": {
+              "_id": {
+                "type": "string",
+                "description": "Id of transaction"
+              },
+              "type": {
+                "type": "string",
+                "description": "Type of transaction",
+                "example": "income"
+              },
+              "date": {
+                "type": "string",
+                "format": "date",
+                "description": "Date of transaction",
+                "example": "23.02.2023"
+              },
+              "category": {
+                "type": "string",
+                "description": "Category of transaction"
+              },
+              "sum": {
+                "type": "number",
+                "description": "Sum of transaction"
+              },
+              "day": {
+                "type": "string",
+                "description": "Day of transaction"
+              },
+              "month": {
+                "type": "string",
+                "description": "Month of transaction"
+              },
+              "year": {
+                "type": "string",
+                "description": "Year of transaction"
+              },
+              "userId": {
+                "type": "string",
+                "description": "User's id"
+              },
+              "currency": {
+                "type": "string",
+                "description": "Currency of transaction"
+              },
+              "createdAt": {
+                "type": "string",
+                "format": "date",
+                "description": "Date creation of transaction"
+              },
+              "updatedAt": {
+                "type": "string",
+                "format": "date",
+                "description": "Date updation of transaction"
+              }
+            }
+          },
+          "balance": {
+            "type": "number",
+            "description": "User's balance"
+          }
+        }
+      },
+      "CreateTransactionError": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "error",
+            "example": "error"
+          },
+          "code": {
+            "type": "string",
+            "description": "400",
+            "example": "400"
+          },
+          "message": {
+            "type": "string",
+            "description": "Missing required field",
+            "example": "Missing required field"
+          }
+        }
+      },
+      "DeleteTransactionResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "ok",
+            "example": "ok"
+          },
+          "code": {
+            "type": "string",
+            "description": "200",
+            "example": "200"
+          },
+          "message": {
+            "type": "string",
+            "description": "Your transaction was deleted!",
+            "example": "Your transaction was deleted!"
+          }
+        }
+      },
+      "DeleteTransactionErrorResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "error",
+            "example": "error"
+          },
+          "code": {
+            "type": "string",
+            "description": "404",
+            "example": "404"
+          },
+          "message": {
+            "type": "string",
+            "description": "Id of transaction not found",
+            "example": "Id of transaction not found"
+          }
+        }
+      },
+      "TransactionYearRequest": {
+        "type": "object",
+        "properties": {
+          "operation": {
+            "type": "string",
+            "description": "Type of transaction",
+            "example": "income"
+          }
+        }
+      },
+      "UpdateTransactionResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "Created"
+          },
+          "code": {
+            "type": "string",
+            "description": "201"
+          },
+          "resultTransaction": {
+            "type": "object",
+            "description": "Updated transaction",
+            "properties": {
+              "_id": {
+                "type": "string",
+                "description": "Id of transaction"
+              },
+              "type": {
+                "type": "string",
+                "description": "Type of transaction",
+                "example": "income"
+              },
+              "date": {
+                "type": "string",
+                "format": "date",
+                "description": "Date of transaction",
+                "example": "23.05.2023"
+              },
+              "category": {
+                "type": "string",
+                "description": "Category of transaction"
+              },
+              "subCategory": {
+                "type": "string",
+                "description": "Subcategory of transaction"
+              },
+              "sum": {
+                "type": "number",
+                "description": "Sum of transaction"
+              },
+              "day": {
+                "type": "string",
+                "description": "Day of transaction"
+              },
+              "month": {
+                "type": "string",
+                "description": "Month of transaction"
+              },
+              "year": {
+                "type": "string",
+                "description": "Year of transaction"
+              },
+              "userId": {
+                "type": "string",
+                "description": "User's id"
+              },
+              "createdAt": {
+                "type": "string",
+                "format": "date",
+                "description": "Date creation of transaction"
+              },
+              "updatedAt": {
+                "type": "string",
+                "format": "date",
+                "description": "Date updation of transaction"
+              }
+            }
+          },
+          "balance": {
+            "type": "number",
+            "description": "User's balance"
+          }
+        }
+      },
+      "BalanceErrorResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "error",
+            "example": "error"
+          },
+          "code": {
+            "type": "string",
+            "description": "404",
+            "example": "404"
+          },
+          "message": {
+            "type": "string",
+            "description": "Not found",
+            "example": "Not found"
+          }
+        }
+      },
+      "UpdateTransactionErrorResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "error",
+            "example": "error"
+          },
+          "code": {
+            "type": "string",
+            "description": "404",
+            "example": "404"
+          },
+          "message": {
+            "type": "string",
+            "description": "Not found",
+            "example": "Not found"
+          }
+        }
+      },
+      "TransactionMonthRequest": {
+        "type": "object",
+        "properties": {
+          "operation": {
+            "type": "string",
+            "description": "Type of transaction",
+            "example": "income"
+          },
+          "month": {
+            "type": "string",
+            "description": "Month of transaction",
+            "example": "February"
+          },
+          "year": {
+            "type": "string",
+            "description": "Year of transaction",
+            "example": "2023"
+          }
+        }
+      },
+      "GetTransactionMonthResponse": {
+        "type": "object",
+        "properties": {
+          "operation": {
+            "type": "string",
+            "description": "Type of transaction",
+            "example": "income"
+          },
+          "sum": {
+            "type": "number",
+            "description": "Sum of transaction"
+          }
+        }
+      },
+
+      "TransactionCategoryRequest": {
+        "type": "object",
+        "properties": {
+          "operation": {
+            "type": "string",
+            "description": "Type of transaction",
+            "example": "income"
+          },
+          "month": {
+            "type": "string",
+            "description": "Month of transaction",
+            "example": "February"
+          },
+          "year": {
+            "type": "string",
+            "description": "Year of transaction",
+            "example": "2023"
+          }
+        }
+      },
+      "TransactionOneCategoryRequest": {
+        "type": "object",
+        "properties": {
+          "operation": {
+            "type": "string",
+            "description": "Type of transaction",
+            "example": "income"
+          },
+          "category": {
+            "type": "string",
+            "description": "Type of transaction",
+            "example": "Salary"
+          },
+          "month": {
+            "type": "string",
+            "description": "Month of transaction",
+            "example": "February"
+          },
+          "year": {
+            "type": "string",
+            "description": "Year of transaction",
+            "example": "2023"
+          }
+        }
+      },
+      "TransactionAllOperationRequest": {
+        "type": "object",
+        "properties": {
+          "operation": {
+            "type": "string",
+            "description": "Type of transaction",
+            "example": "income"
+          },
+          "category": {
+            "type": "string",
+            "description": "Type of transaction",
+            "example": "Salary"
+          },
+          "month": {
+            "type": "string",
+            "description": "Month of transaction",
+            "example": "February"
+          },
+          "year": {
+            "type": "string",
+            "description": "Year of transaction",
+            "example": "2023"
+          }
+        }
+      },
+      "GetTransactionCategoryResponse": {
+        "type": "object",
+        "properties": {
+          "operation": {
+            "type": "string",
+            "description": "Type of category",
+            "example": "Salary"
+          },
+          "sum": {
+            "type": "number",
+            "description": "Sum of category"
+          }
+        }
+      },
+      "GetTransactionAllOperationResponse": {
+        "type": "object",
+        "properties": {
+          "operation": {
+            "type": "string",
+            "description": "Type of transaction",
+            "example": "income"
+          },
+          "sum": {
+            "type": "number",
+            "description": "Sum of transaction"
+          }
+        }
+      },
+      "GetOneCategoryResponse": {
+        "type": "object",
+        "properties": {
+          "category": {
+            "type": "string",
+            "description": "Category of transaction"
+          },
+          "sum": {
+            "type": "number",
+            "description": "Sum of transaction"
+          }
+        }
+      }
+    },
+
+    "securitySchemes": {
+      "Bearer": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}
