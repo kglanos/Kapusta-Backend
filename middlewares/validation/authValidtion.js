@@ -1,3 +1,4 @@
+//TODO: do usunięcia
 // import Joi from "joi";
 // import { httpCodes } from "../../lib/constants";
 
