@@ -48,24 +48,6 @@ const generateToken = (user) => {
   });
 };
 
-// class AuthService {
-//   getToken(user) {
-//     const id = user.id;
-//     const payload = { id };
-//     const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "12h" });
-//     return token;
-//   }
-
-//   async setToken(id, token) {
-//     await this.updateToken(id, token);
-//   }
-
-//   async updateToken(id, token) {
-//     return await User.updateOne({ _id: id }, { token });
-//   }
-// }
-// const authService = new AuthService();
-
 module.exports = {
   auth,
   generateToken,
