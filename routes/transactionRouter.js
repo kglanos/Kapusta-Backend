@@ -1,35 +1,23 @@
 const express = require("express");
+
 const {
-  newTransaction,
-  deleteTransaction,
-  getTransactions,
-  summaryByMonth,
-  allSummaryReports,
-  categoryReports,
-  itemsCategoryReports,
-  resetTransactions,
-  clearByOperation,
   allInfoTransaction,
   allReportsTransactions,
-  getExpenseTransactions
+  allSummaryReports,
+  categoryReports,
+  clearByOperation,
+  deleteTransaction,
+  getExpenseTransactions,
+  getTransactions,
+  itemsCategoryReports,
+  newTransaction,
+  resetTransactions,
+  summaryByMonth,
 } = require("../controllers/transactions");
-
 const { tryCatchWrapper } = require("../utils/tryCatchWrapper");
 const { auth } = require("../config/passport-jwt");
 
-// const { validateTransaction } = require("../middlewares/joiValidation");
-// const {
-//   transactionSchema,
-//   operationSchema,
-//   summaryReportsSchema,
-//   categoryReportsSchema,
-//   itemsCategorySchema,
-//   infoTransactionSchema,
-// } = require("../schemas/joi/joiTransaction");
-
 const router = express.Router();
-
-// dodanie nowej transakcji  - stare
 
 router.post(
   "/new",
@@ -41,24 +29,15 @@ router.post(
 // pobranie wszystkich transakcji - trzeba podać typ operacji (income lub expenses) -stare
 router.get("/operation", auth, tryCatchWrapper(getTransactions));
 
-
-
-
 // ---------------  pobranie i dodanie transakcji expenses - nowe
-
 router.post("/transaction/expenses", auth, tryCatchWrapper(newTransaction));
 router.get("/transaction/expenses", auth, tryCatchWrapper(getTransactions));
-
-
-
 
 // ---------------------
 router.post("/transaction/income", auth, tryCatchWrapper(newTransaction));
 router.get("/transaction/income", auth, tryCatchWrapper(getTransactions));
 
 router.delete("/transaction/:id", auth, tryCatchWrapper(deleteTransaction));
-
-
 
 router.get("/transaction/total-espenses", async (req, res) => {
   try {
@@ -74,9 +53,7 @@ router.get("/transaction/total-espenses", async (req, res) => {
   }
 });
 
-
 // zwraca sum - po typie operacji osobno income i expenses z rozbiciem na miesiące
-
 router.post(
   "/summary",
   auth,
@@ -122,8 +99,6 @@ router.post(
   // validateTransaction(infoTransactionSchema),
   tryCatchWrapper(allReportsTransactions)
 );
-
-// usuwanie
 
 router.delete("/delete-all", auth, tryCatchWrapper(resetTransactions));
 
