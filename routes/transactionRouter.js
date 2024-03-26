@@ -19,6 +19,23 @@ const { auth } = require("../config/passport-jwt");
 
 const router = express.Router();
 
+/*
+ * Ten plik mozna rozdzielić. Np:
+ * /income
+ * /expenses
+ * /reports
+ *
+ * może nawet w app.js zrobić
+ * app.use('/income', incomeRoutes);
+ * app.use('/expenses', expensesRoutes);
+ * app.use('/reports', reportsRoutes);
+ *
+ * Ten plik będzie wtedy przyjaźniejszy.
+ *
+ * i jeśli wszędzie autoryzacja to i tam można dodać
+ * app.use('/reports', auth, reportsRoutes);
+*/
+
 router.post(
   "/new",
   auth,
@@ -44,12 +61,13 @@ router.get("/transaction/total-espenses", async (req, res) => {
     // Pobierz wszystkie transakcje wydatków
     const expenseTransactions = await getExpenseTransactions();
     // Zsumuj kwoty wszystkich transakcji wydatków
-    const totalExpense = expenseTransactions.reduce((total, transaction) => total + transaction.amount, 0);
+    const totalExpense = expenseTransactions.reduce((total, transaction) => total + transaction.amount, 0); // ważne żeby linie nie wychodziły więcej niż 80 znaków.
     // Zwróć sumę jako odpowiedź
     res.json({ totalExpense });
   } catch (error) {
     console.error('Błąd podczas pobierania sumy wydatków:', error);
     res.status(500).json({ error: 'Wystąpił błąd podczas przetwarzania żądania' });
+    // res.status(500).json({ error: 'get_transactions' }); // można też tak trochę niezależniająć backend od frontendu. Czyli backend wysyła coś co ma sens dla frontendu a frontend niezależnie może generować wiadomości na podstawie krótkich słów
   }
 });
 
