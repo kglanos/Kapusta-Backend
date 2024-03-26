@@ -34,6 +34,8 @@ const router = express.Router();
  *
  * i jeśli wszędzie autoryzacja to i tam można dodać
  * app.use('/reports', auth, reportsRoutes);
+ *
+ * Mozna dodać jeszcze endpoint ini w app.js który będzie dawał informacje o wszystkim na fronend
 */
 
 router.post(
@@ -46,8 +48,7 @@ router.post(
 // pobranie wszystkich transakcji - trzeba podać typ operacji (income lub expenses) -stare
 router.get("/operation", auth, tryCatchWrapper(getTransactions));
 
-// ---------------  pobranie i dodanie transakcji expenses - nowe
-router.post("/transaction/expenses", auth, tryCatchWrapper(newTransaction));
+// ---------------  pobranie i dodanie transakcji expenses - nowe router.post("/transaction/expenses", auth, tryCatchWrapper(newTransaction));
 router.get("/transaction/expenses", auth, tryCatchWrapper(getTransactions));
 
 // ---------------------
