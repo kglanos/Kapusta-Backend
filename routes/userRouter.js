@@ -9,8 +9,8 @@ const { auth } = require("../config/passport-jwt");
 
 userRouter.post("/registration", addUser);
 userRouter.post("/login", loginUser);
-userRouter.post("/logout", auth, logoutUser);
+userRouter.post("/logout", logoutUser);
 userRouter.get("/current", auth, currentUser);
-userRouter.patch("/user/balance", auth, updateInitialBalance)
+userRouter.patch("/user/balance", auth, updateInitialBalance);
 
 module.exports = userRouter;

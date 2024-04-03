@@ -1,7 +1,9 @@
+require("dotenv").config();
+
 const passport = require("passport");
 const passportJWT = require("passport-jwt");
 const jwt = require("jsonwebtoken");
-require("dotenv").config();
+
 const User = require("../schemas/user");
 
 const JWTStrategy = passportJWT.Strategy;
